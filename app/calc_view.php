@@ -6,27 +6,22 @@
 </head>
 <body>
 
+<div style="width:90%; margin: 2em auto;">
+	<a href="<?php print(_APP_ROOT); ?>/app/security/logout.php" class="pure-button pure-button-active">Wyloguj</a>
+</div>
+
 <form action="<?php print(_APP_URL);?>/app/calc.php" method="post">
 	<label for="id_amount">Kwota kredytu: </label>
-	<input id="id_amount" type="text" name="amount" value="<?php if (isset($amount)) print($amount); ?>" /><br />
+	<input id="id_amount" type="text" name="amount" value="<?php out($amount); ?>" /><br />
 	<label for="id_time">Czas spłaty w latach: </label>
-	<input id="id_time" type="text" name="time" value="<?php if (isset($time)) print($time); ?>" /><br />
+	<input id="id_time" type="text" name="time" value="<?php out($time); ?>" /><br />
 	<label for="id_interest">Oprocentowanie [%]: </label>
-	<input id="id_interest" type="text" name="interest" value="<?php if (isset($interest))  print($interest); ?>" /><br />
+	<input id="id_interest" type="text" name="interest" value="<?php out($interest); ?>" /><br />
 	<input type="submit" value="Oblicz wysokość miesięsznej raty" />
 </form>	
 
 <?php
-//wyświeltenie listy błędów, jeśli istnieją
-if (isset($messages)) {
-	if (count ( $messages ) > 0) {
-		echo '<ol style="margin: 20px; padding: 10px 10px 10px 30px; border-radius: 5px; background-color: #f88; width:300px;">';
-		foreach ( $messages as $key => $msg ) {
-			echo '<li>'.$msg.'</li>';
-		}
-		echo '</ol>';
-	}
-}
+    include _ROOT_PATH.'/app/utils/error_view.php';
 ?>
 
 <?php if (isset($result)){ ?>
