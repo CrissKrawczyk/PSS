@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__FILE__).'/../../config.php';
 require_once dirname(__FILE__).'/../utils/base_utils.php';
+require_once _ROOT_PATH.'/lib/vendor/autoload.php';
+use Smarty\Smarty;
 
 function getParamsLogin(&$form){
     $fields = ['login', 'pass'];
@@ -41,9 +43,13 @@ $form = array();
 $messages = array();
 
 getParamsLogin($form);
-
+$smarty = new Smarty();
+$smarty->assign('app_root',_APP_ROOT);
+$smarty->assign('app_url',_APP_URL);
+$smarty->assign('root_path',_ROOT_PATH);
 if (!validateLogin($form,$messages)) {
-	include _ROOT_PATH.'/app/security/login_view.php';
+    $smarty->assign('messages',$messages);
+    $smarty->display(_ROOT_PATH.'/app/security/login_view.tpl');
 } else {
 	header("Location: "._APP_URL);
 }

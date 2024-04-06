@@ -2,6 +2,8 @@
 require_once dirname(__FILE__).'/../config.php';
 require_once _ROOT_PATH.'/app/utils/base_utils.php';
 include _ROOT_PATH.'/app/security/check.php';
+require_once _ROOT_PATH.'/lib/vendor/autoload.php';
+use Smarty\Smarty;
 
 function getParams(&$amount, &$time, &$interest){
     $amount = isset ($_REQUEST ['amount']) ? $_REQUEST ['amount'] : null;
@@ -75,9 +77,19 @@ $result = null;
 $messages = array();
 getParams($amount, $time, $interest);
 
+$smarty = new Smarty();
+$smarty->assign('app_root',_APP_ROOT);
+$smarty->assign('app_url',_APP_URL);
+$smarty->assign('root_path',_ROOT_PATH);
+$smarty->assign('amount',$amount);
+$smarty->assign('time',$time);
+$smarty->assign('interest',$interest);
+$smarty->assign('result',$result);
+$smarty->assign('user_login',$_SESSION['role']);
 if (validate($amount, $time, $interest, $messages) && validateSecurity($amount, $interest, $messages)) {
-	$timeInMonths = $time * 12;
-	$result = ($amount / $timeInMonths) * (($interest / 100) + 1);
+    $timeInMonths = $time * 12;
+    $result = ($amount / $timeInMonths) * (($interest / 100) + 1);
+    $smarty->assign('result',$result);
 }
-
-include 'calc_view.php';
+$smarty->assign('messages',$messages);
+$smarty->display(_ROOT_PATH.'/app/calc_view.tpl');
