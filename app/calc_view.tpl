@@ -18,20 +18,20 @@
 
 <form action="{$app_url}/app/calc.php" method="post">
 	<label for="id_amount">Kwota kredytu: </label>
-	<input id="id_amount" type="text" name="amount" value="{$amount}" /><br />
+	<input id="id_amount" type="text" name="amount" value="{$form->amount}" /><br />
 	<label for="id_time">Czas spłaty w latach: </label>
-	<input id="id_time" type="text" name="time" value="{$time}" /><br />
+	<input id="id_time" type="text" name="time" value="{$form->time}" /><br />
 	<label for="id_interest">Oprocentowanie [%]: </label>
-	<input id="id_interest" type="text" name="interest" value="{$interest}" /><br />
+	<input id="id_interest" type="text" name="interest" value="{$form->interest}" /><br />
 	<input type="submit" value="Oblicz wysokość miesięsznej raty" />
 </form>	
 
 {include "`$root_path`/app/utils/error_view.tpl"}
 
-{if isset($result)}
+{if isset($result->result)}
 	<h4>Wynik</h4>
 	<p class="res">
-	{$result}
+	{$result->result}
 	</p>
 {/if}
 

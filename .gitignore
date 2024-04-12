@@ -1,5 +1,7 @@
 .idea
-lib
+lib/composer.json
+lib/composer.lock
+lib/vendor
 templates_c
 app/templates_c
 app/security/templates_c

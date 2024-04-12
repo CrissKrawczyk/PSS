@@ -5,4 +5,4 @@ use Smarty\Smarty;
 session_start();
 session_destroy();
 
-header("Location: "._APP_URL);
+header("Location: ".$conf->app_url);

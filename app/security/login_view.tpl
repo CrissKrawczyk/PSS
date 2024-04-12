@@ -16,7 +16,7 @@
 	<legend>Logowanie</legend>
 	<fieldset>
 		<label for="id_login">login: </label>
-		<input id="id_login" type="text" name="login" value="{$form && $form['login']}" />
+		<input id="id_login" type="text" name="login" value="{$form->login}" />
 		<label for="id_pass">pass: </label>
 		<input id="id_pass" type="password" name="pass" />
 	</fieldset>
