@@ -1,4 +1,4 @@
 <?php
-require_once 'config.php';
+require_once 'init.php';
 
-include $conf->root_path.'/app/calc.php';
+include $conf->root_path.'/ctrl.php';

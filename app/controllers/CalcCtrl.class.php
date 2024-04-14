@@ -1,20 +1,13 @@
-<?php
-require_once dirname(__FILE__).'/../config.php';
-require_once $conf->root_path.'/app/CalcForm.class.php';
-require_once $conf->root_path.'/app/CalcResult.class.php';
-require_once $conf->root_path.'/lib/Messages.class.php';
-include $conf->root_path.'/app/security/check.php';
-require_once $conf->root_path.'/lib/vendor/autoload.php';
-use Smarty\Smarty;
+<?php namespace app\controllers;
+use app\forms\CalcForm;
+use app\model\CalcResult;
 
 class CalcCtrl {
 
-    private $msgs;
     private $form;
     private $result;
 
     public function __construct() {
-        $this->msgs = new Messages();
         $this->form = new CalcForm();
         $this->result = new CalcResult();
     }
@@ -31,57 +24,57 @@ class CalcCtrl {
         }
 
         if ( $this->form->amount == "") {
-            $this->msgs->addError('Nie podano wartości kredytu');
+            getMessages()->addError('Nie podano wartości kredytu');
         }
         if ( $this->form->time == "") {
-            $this->msgs->addError('Nie podano liczby czasu spłaty kredytu');
+            getMessages()->addError('Nie podano liczby czasu spłaty kredytu');
         }
         if ( $this->form->interest == "") {
-            $this->msgs->addError('Nie podano oprocentowania');
+            getMessages()->addError('Nie podano oprocentowania');
         }
 
-        if (!$this->msgs ->hasError()) {
+        if (!getMessages() ->hasError()) {
             $this->form->amount = str_replace(",", ".", $this->form->amount);
             $this->form->interest = str_replace(",", ".", $this->form->interest);
             if (! is_numeric( $this->form->amount )) {
-                $this->msgs->addError('Kwota kredytu nie jest liczbą!');
+                getMessages()->addError('Kwota kredytu nie jest liczbą!');
             }
 
             if (! is_numeric( $this->form->time )) {
-                $this->msgs->addError('Czas spłaty nie jest liczbą całkowitą!');
+                getMessages()->addError('Czas spłaty nie jest liczbą całkowitą!');
             }
 
             if (! is_numeric( $this->form->interest )) {
-                $this->msgs->addError('Oprocentowanie nie jest liczbą!');
+                getMessages()->addError('Oprocentowanie nie jest liczbą!');
             }
         }
 
-        if (!$this->msgs ->hasError()) {
+        if (!getMessages() ->hasError()) {
 
             $this->form->amount = floatval($this->form->amount);
             $this->form->time = intval($this->form->time);
             $this->form->interest = floatval($this->form->interest);
 
             if ($this->form->amount <= 0) {
-                $this->msgs->addError('Kwota kredytu musi być większa od 0');
+                getMessages()->addError('Kwota kredytu musi być większa od 0');
             }
 
             if ($this->form->time <= 0) {
-                $this->msgs->addError('Czas spłaty musi wynosić przynajmniej rok');
+                getMessages()->addError('Czas spłaty musi wynosić przynajmniej rok');
             }
         }
-        return !$this->msgs ->hasError();
+        return !getMessages() ->hasError();
     }
 
     public function validateSecurity() {
         global $role;
         if ($this->form->amount > 10000 && $role != 'admin') {
-            $this->msgs->addError('Tylko admin może brać kredyt o kwocie większej niż 10 000');
+            getMessages()->addError('Tylko admin może brać kredyt o kwocie większej niż 10 000');
         }
         if ($this->form->interest <= 0 && $role != 'admin') {
-                $this->msgs->addError('Tylko admin może brać kredyt bez oprocentowania');
+                getMessages()->addError('Tylko admin może brać kredyt bez oprocentowania');
             }
-        return !$this->msgs ->hasError();
+        return !getMessages() ->hasError();
     }
 
     public function process() {
@@ -97,17 +90,18 @@ class CalcCtrl {
     public function generateView() {
         global $conf;
 
-        $smarty = new Smarty();
+        $smarty = getSmarty();
         $smarty->assign('app_root',$conf->app_root);
         $smarty->assign('app_url',$conf->app_url);
         $smarty->assign('root_path',$conf->root_path);
 
         $smarty->assign('form',$this->form);
         $smarty->assign('result',$this->result);
-        $smarty->assign('messages',$this->msgs);
+        $smarty->assign('messages',getMessages());
+        $smarty->assign('conf',$conf);
 
         $smarty->assign('user_login',$_SESSION['role']);
 
-        $smarty->display($conf->root_path.'/app/calc_view.tpl');
+        $smarty->display('CalcView.tpl');
     }
 }

@@ -1,4 +1,4 @@
-{extends file="`$root_path`/assets/main.html"}
+{extends file="main.html"}
 
 {block name=header}
     <span class="title">Zaloguj się, abu skorzystać z kalkulatora!</span>
@@ -12,7 +12,7 @@
 
 <div style="width:90%; margin: 2em auto;">
 
-<form action="{$app_root}/app/security/login.php" method="post" class="pure-form pure-form-stacked">
+<form action="{$conf->action_url}login" method="post" class="pure-form pure-form-stacked">
 	<legend>Logowanie</legend>
 	<fieldset>
 		<label for="id_login">login: </label>
@@ -23,7 +23,7 @@
 	<input type="submit" value="zaloguj" class="pure-button pure-button-primary"/>
 </form>	
 
-{include "`$root_path`/app/utils/error_view.tpl"}
+{include "ErrorView.tpl"}
 
 </div>
 {/block}

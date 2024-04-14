@@ -1,4 +1,4 @@
-{extends file="`$root_path`/assets/main.html"}
+{extends file="main.html"}
 
 {block name=header}
     <span class="title">Wpisz wartości i dowiedz się o racie kredytu!</span>
@@ -11,12 +11,12 @@
 
 {block name=navbar}
 <li class="active">
-	<a href="{$app_root}/app/security/logout.php" class="pure-button pure-button-active">Wyloguj</a>
+	<a href="{$conf->action_url}logout" class="pure-button pure-button-active">Wyloguj</a>
 </li>
 {/block}
 {block name=content}
 
-<form action="{$app_url}/app/calc.php" method="post">
+<form action="{$conf->action_url}calcCompute" method="post">
 	<label for="id_amount">Kwota kredytu: </label>
 	<input id="id_amount" type="text" name="amount" value="{$form->amount}" /><br />
 	<label for="id_time">Czas spłaty w latach: </label>
@@ -26,7 +26,7 @@
 	<input type="submit" value="Oblicz wysokość miesięsznej raty" />
 </form>	
 
-{include "`$root_path`/app/utils/error_view.tpl"}
+{include "ErrorView.tpl"}
 
 {if isset($result->result)}
 	<h4>Wynik</h4>
