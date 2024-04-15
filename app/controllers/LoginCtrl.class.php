@@ -1,5 +1,6 @@
 <?php namespace app\controllers;
 use app\forms\LoginForm;
+use app\model\User;
 
 class LoginCtrl {
 
@@ -10,8 +11,8 @@ class LoginCtrl {
     }
 
     function getParamsLogin(){
-        $this->form->login = isset ($_REQUEST ['login']) ? $_REQUEST ['login'] : null;
-        $this->form->pass = isset ($_REQUEST ['pass']) ? $_REQUEST ['pass'] : null;
+        $this->form->login = getFromRequest('login');
+        $this->form->pass = getFromRequest('pass');
     }
 
     function validateLogin(){
@@ -28,13 +29,21 @@ class LoginCtrl {
         if (getMessages() ->hasError()) return false;
 
         if ($this->form->login == "admin" && $this->form->pass == "admin") {
-            session_start();
-            $_SESSION['role'] = 'admin';
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            $user = new User($this->form->login, 'admin');
+            $_SESSION['user'] = serialize($user);
+            addRole($user->role);
             return true;
         }
         if ($this->form->login == "user" && $this->form->pass == "user") {
-            session_start();
-            $_SESSION['role'] = 'user';
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            $user = new User($this->form->login, 'user');
+            $_SESSION['user'] = serialize($user);
+            addRole($user->role);
             return true;
         }
 
@@ -42,27 +51,28 @@ class LoginCtrl {
         return false;
     }
 
-    public function process() {
-        global $conf;
+    public function action_login() {
         $this->getParamsLogin();
-        $smarty = getSmarty();
-        $smarty->assign('form',$this->form);
-        $smarty->assign('app_root',$conf->app_root);
-        $smarty->assign('app_url',$conf->app_url);
-        $smarty->assign('root_path',$conf->root_path);
         if (!$this->validateLogin()) {
-            $smarty->assign('messages',getMessages());
-            $smarty->display('LoginView.tpl');
+            $this->generateView();
         } else {
-            header("Location: ".$conf->app_url);
+            header("Location: ".getConf()->app_url."/");
         }
     }
 
-    public function logout() {
-        session_start();
-        session_destroy();
+    public function generateView() {
+        $smarty = getSmarty();
+        $smarty->assign('messages',getMessages());
+        $smarty->assign('form',$this->form);
+        $smarty->assign('app_root',getConf()->app_root);
+        $smarty->assign('app_url',getConf()->app_url);
+        $smarty->assign('root_path',getConf()->root_path);
+        $smarty->display('LoginView.tpl');
+    }
 
-        header("Location: ".$conf->app_url);
+    public function action_logout() {
+        session_destroy();
+        $this->generateView();
     }
 
 }

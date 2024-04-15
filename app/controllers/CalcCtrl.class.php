@@ -13,9 +13,9 @@ class CalcCtrl {
     }
 
     public function getParams(){
-        $this->form->amount = isset ($_REQUEST ['amount']) ? $_REQUEST ['amount'] : null;
-        $this->form->time = isset ($_REQUEST ['time']) ? $_REQUEST ['time'] : null;
-        $this->form->interest = isset ($_REQUEST ['interest']) ? $_REQUEST ['interest'] : null;
+        $this->form->amount = getFromRequest('amount');
+        $this->form->time = getFromRequest('time');
+        $this->form->interest = getFromRequest('interest');
     }
 
     public function validate() {
@@ -67,17 +67,16 @@ class CalcCtrl {
     }
 
     public function validateSecurity() {
-        global $role;
-        if ($this->form->amount > 10000 && $role != 'admin') {
+        if ($this->form->amount > 10000 && !inRole('admin')) {
             getMessages()->addError('Tylko admin może brać kredyt o kwocie większej niż 10 000');
         }
-        if ($this->form->interest <= 0 && $role != 'admin') {
+        if ($this->form->interest <= 0 && !inRole('admin')) {
                 getMessages()->addError('Tylko admin może brać kredyt bez oprocentowania');
             }
         return !getMessages() ->hasError();
     }
 
-    public function process() {
+    public function action_calcCompute() {
 
         $this->getParams();
         if ($this->validate() && $this->validateSecurity()) {
@@ -87,20 +86,22 @@ class CalcCtrl {
         $this->generateView();
     }
 
-    public function generateView() {
-        global $conf;
+    public function action_calcShow(){
+        $this->generateView();
+    }
 
+    public function generateView() {
         $smarty = getSmarty();
-        $smarty->assign('app_root',$conf->app_root);
-        $smarty->assign('app_url',$conf->app_url);
-        $smarty->assign('root_path',$conf->root_path);
+        $smarty->assign('app_root',getConf()->app_root);
+        $smarty->assign('app_url',getConf()->app_url);
+        $smarty->assign('root_path',getConf()->root_path);
 
         $smarty->assign('form',$this->form);
         $smarty->assign('result',$this->result);
         $smarty->assign('messages',getMessages());
-        $smarty->assign('conf',$conf);
+        $smarty->assign('conf',getConf());
 
-        $smarty->assign('user_login',$_SESSION['role']);
+        $smarty->assign('user_login',unserialize($_SESSION['user'])->login);
 
         $smarty->display('CalcView.tpl');
     }
