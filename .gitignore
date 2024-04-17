@@ -1,5 +1,9 @@
 .idea
-lib
-templates_c
-app/templates_c
-app/security/templates_c
+Calc/lib
+Calc/templates_c
+Calc/app/templates_c
+Calc/app/security/templates_c
+BD/lib
+BD/templates_c
+BD/app/templates_c
+BD/app/security/templates_c
