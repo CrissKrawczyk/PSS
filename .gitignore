@@ -7,3 +7,8 @@ BD/lib
 BD/templates_c
 BD/app/templates_c
 BD/app/security/templates_c
+cards/lib
+cards/templates_c
+cards/app/templates_c
+cards/app/security/templates_c
+cards/public/security/templates_c
