@@ -12,3 +12,4 @@ cards/templates_c
 cards/app/templates_c
 cards/app/security/templates_c
 cards/public/security/templates_c
+cards/public/templates_c
