@@ -17,4 +17,5 @@
 		</div>
 	</fieldset>
 </form>	
+<div><a class="go-back" href={$conf->app_root}\userPage>Wróć</a></div>
 {/block}

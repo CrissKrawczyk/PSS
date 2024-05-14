@@ -69,6 +69,24 @@ class AdminCtrl {
         App::getRouter()->forwardTo('adminPage');
     }
 
+    public function action_giveAdminRole() {
+        $userId = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+        App::getDB()->insert("user_role", [
+            "user_id" => $userId,
+            "role_idn" => "admin"
+        ]);
+        App::getRouter()->forwardTo('adminPage');
+    }
+
+    public function action_removeAdminRole() {
+        $userId = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+        App::getDB()->delete("user_role", [
+            "user_id" => $userId,
+            "role_idn" => "admin"
+        ]);
+        App::getRouter()->forwardTo('adminPage');
+    }
+
     public function generateView() {
         App::getSmarty()->assign("users", $this->getUsersListData());
         App::getSmarty()->display('AdminPage.tpl');

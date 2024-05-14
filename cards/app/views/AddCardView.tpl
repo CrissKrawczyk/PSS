@@ -16,5 +16,6 @@
 			<input type="submit" value="dodaj" class="pure-button pure-button-primary"/>
 		</div>
 	</fieldset>
-</form>	
+</form>
+<div><a class="go-back" href={$conf->app_root}\addUserCard>Wróć</a></div>
 {/block}

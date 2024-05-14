@@ -58,3 +58,83 @@
 .button-xlarge {
     font-size: 125%;
 }
+
+.welcome-container {
+    text-align: center;
+    margin-top: 6rem;
+}
+
+.go-back {
+    text-decoration: none;
+    color: black;
+    margin-top: 2rem;
+    display: block;
+    font-style: italic;
+    width: fit-content;
+}
+
+.premium-text {
+    color: goldenrod;
+}
+
+.test-premium-text {
+    color: red;
+}
+
+.no-premium-text {
+    display: inline;
+}
+
+.user-tables-container {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.decks-list-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+}
+
+.decks-list-window {
+    place-self: center;
+    margin: auto;
+    background-color: antiquewhite;
+    z-index: 1;
+    position: relative;
+}
+
+.decks-list-shadow {
+    background-color: #00000050;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.dialog-window-close {
+    font-size: 1.5rem;
+    width: fit-content;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    cursor: pointer;
+}
+
+.decks-list-form {
+    margin: 3rem 2rem 2rem 2rem;
+}
+
+.selectize-form-container {
+    display: flex;
+    place-items: baseline;
+}
+
+.selectize-field-container {
+    width: 20rem;
+    height: 3rem;
+}
+

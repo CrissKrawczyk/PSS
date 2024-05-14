@@ -17,5 +17,5 @@
 		</div>
 	</fieldset>
 </form>	
-<a href="{$conf->app_root}\signUp">Zarejestruj się!</a>
+<a class="pure-button" href="{$conf->app_root}\signUp">Nie posiadasz konta? Zarejestruj się!</a>
 {/block}

@@ -40,6 +40,11 @@ class SignUpCtrl {
             return false;
         }
 
+        if (App::getDB()->has("user", ["login" => $this->form->login])) {
+            Utils::addErrorMessage('Użytkownik o takim loginie już istnieje');
+            return false;
+        }
+
         if (empty($this->form->login)) {
             $this->form->login = $this->form->email;
         }

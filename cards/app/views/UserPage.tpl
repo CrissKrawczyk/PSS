@@ -1,20 +1,24 @@
 {extends file="main.tpl"}
 
 {block name=top}
+<h1>Panel użytkownika:</h1>
 {if $hasPremium}
-<div>Jesteś premium!!!</div>
+<div class="premium-text">Jesteś premium!!!</div>
 {/if}
 {if $isTestPremium}
-<div>(UWAGA KORZYSTASZ Z TESTOWEJ WERSJI PREMIUM!!)</div>
+<div class="test-premium-text">(UWAGA KORZYSTASZ Z TESTOWEJ WERSJI PREMIUM!!)</div>
 {/if}
-<div>User page!</div>
 {if !$hasPremium}
-<a href="{$conf->app_root}\showCodeGenerator">Kup kod!</a>
-<a href="{$conf->app_root}\useCode">Wykorzystaj kod!</a>
+<div class="no-premium-text">nie jesteś premium... Kup kod i ulepsz swoje konto!</div>
+<a class="pure-button button-small" href="{$conf->app_root}\showCodeGenerator">Kup kod!</a>
+<a class="pure-button button-small" href="{$conf->app_root}\useCode">Wykorzystaj kod!</a>
 {/if}
-<a href="{$conf->app_root}\addUserCard">Dodaj kartę!</a>
-<a href="{$conf->app_root}\createDeck">Utwórz talię!</a>
+<br>
 
+<div class="user-tables-container">
+<div>
+<a class="pure-button button-xlarge" href="{$conf->app_root}\addUserCard">Dodaj kartę!</a>
+{if count($cards) > 0}
 <table class="pure-table pure-table-bordered">
     <thead>
         <tr>
@@ -33,10 +37,8 @@
             <td>{$card["quantity"]}</td>
             <td>
             <form id="add-to-deck-form{$card["id"]}" class="pure-form pure-form-stacked" onsubmit="ajaxPostForm('add-to-deck-form{$card["id"]}','{$conf->action_root}addToDeckList','add-to-deck{$card["id"]}'); return false;">
-                <fieldset>
-                    <input type="text" name="cardId" value="{$card["id"]}" /><br />
+                    <input type="hidden" name="cardId" value="{$card["id"]}" />
                     <button type="submit" class="pure-button pure-button-primary">+</button>
-                </fieldset>
             </form>
             <div id="add-to-deck{$card["id"]}">
             </div>
@@ -46,7 +48,14 @@
     {/foreach}
     </tbody>
 </table>
+{else}
+<h3>Nie posiadasz żadnych kart... Dodaj nową przyciskiem powyżej!</h3>
+{/if}
+</div>
 
+<div>
+<a class="pure-button button-xlarge" href="{$conf->app_root}\createDeck">Utwórz talię!</a>
+{if count($decks) > 0}
 <table class="pure-table pure-table-bordered">
     <thead>
         <tr>
@@ -74,5 +83,11 @@
     {/foreach}
     </tbody>
 </table>
+{else}
+<h3>Nie posiadasz żadnych talii... Dodaj nową przyciskiem powyżej!</h3>
+{/if}
+</div>
 
+</div>
+<div><a class="go-back" href={$conf->app_root}\welcomeScreen>Wróć</a></div>
 {/block}

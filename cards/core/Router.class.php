@@ -72,6 +72,13 @@ class Router {
             $controller = $namespace . "\\" . $controller;
         }
         $ctrl = new $controller;
+        if (method_exists($ctrl, 'validateSessionUser') && !$ctrl->validateSessionUser()) {
+            if (method_exists($ctrl, 'wrongSessionUserRedirect'))
+                $ctrl->wrongSessionUserRedirect();
+            else
+                $this->redirectTo('');
+            exit;
+        }
         if (method_exists($ctrl, $method)) {
             $ctrl->$method();
         } else {
